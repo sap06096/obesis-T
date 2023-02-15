@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ja.mvproject.member.mapper.MemberSQLMapper">
+
+	<insert id="insertMember">
+		insert into mv_member values(not null,#{mb_id},#{mb_pw},#{mb_nick},#{mb_phone},#{mb_email},Now())
+	</insert>
+	
+	<select id="getMemberInfo" resultType="com.ja.mvproject.vo.MemberVo">
+		select * from mv_member where mb_id = #{mb_id} and mb_pw = #{mb_pw}
+	</select>
+	
+	
+	
+</mapper>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ja.mvproject.board.mapper.BoardSQLMapper">
+
+	<insert id="insertBoard">
+		insert into mv_board values(not null,#{mb_no},0,#{bd_title},#{bd_content},now())
+	</insert>
+	
+	<select id="selectBoardVo" resultType="com.ja.mvproject.vo.BoardVo">
+		select t2.* from (
+			select @rownum:=@rownum+1, t1.* from(
+				select mb.* 
+				from mv_board mb , mv_member mm 
+				where mb.mb_no = mm.mb_no
+				<if test="searchType != null and searchWord != null">
+					<choose>
+						<when test="searchType == 'title'">
+							AND mb.bd_Title LIKE '%' || #{searchWord} || '%'
+						</when>
+						<when test="searchType == 'content'">
+							AND mb.bd_content LIKE '%' || #{searchWord} || '%'
+						</when>
+						<when test="searchType == 'nickname'">
+							AND mm.mb_nick LIKE '%' || #{searchWord} || '%'
+						</when>
+					</choose>
+				</if>
+				order by mb.bd_no desc
+			)t1 
+			WHERE (@rownum:=0)=0
+		)t2
+	</select>
+	
+	<select id="selectMemberVoByMB_no" resultType="com.ja.mvproject.vo.MemberVo">
+		select * from mv_member where mb_no = #{mb_no}
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>
